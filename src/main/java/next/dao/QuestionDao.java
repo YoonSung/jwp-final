@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import next.model.Question;
@@ -62,60 +61,48 @@ public class QuestionDao {
 	}
 	
 	public List<Question> findAll() throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "SELECT questionId, writer, title, createdDate, countOfComment FROM QUESTIONS " + 
-					"order by questionId desc";
-			pstmt = con.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
-
-			List<Question> questions = new ArrayList<Question>();
-			Question question = null;
-			while (rs.next()) {
-				question = new Question(
+		SelectJdbcTemplate template = new SelectJdbcTemplate() {
+			
+			@Override
+			void setValues(PreparedStatement pstmt) throws SQLException {}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			Question mapRow(ResultSet rs) throws SQLException {
+				Question test = new Question(
 						rs.getLong("questionId"),
 						rs.getString("writer"),
 						rs.getString("title"),
 						null,
 						rs.getTimestamp("createdDate"),
 						rs.getInt("countOfComment"));
-				questions.add(question);
+				System.out.println("value = "+test.toString());
+				return test;
 			}
-
-			return questions;
-		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		
+		String sql = "SELECT "
+									+ "questionId, writer, title, createdDate, countOfComment "
+							+ "FROM "
+									+ "QUESTIONS " 
+							+  "ORDER BY questionId DESC";
+		
+		return template.findAll(sql);
 	}
 
-	public Question findById(long questionId) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = ConnectionManager.getConnection();
-			String sql = "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS " + 
-					"WHERE questionId = ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setLong(1, questionId);
-
-			rs = pstmt.executeQuery();
-
-			Question question = null;
-			if (rs.next()) {
-				question = new Question(
+	public Question findById(final long questionId) throws SQLException {
+		
+		SelectJdbcTemplate template = new SelectJdbcTemplate() {
+			
+			@Override
+			void setValues(PreparedStatement pstmt) throws SQLException {
+				pstmt.setLong(1, questionId);
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			Question mapRow(ResultSet rs) throws SQLException {
+				return new Question(
 						rs.getLong("questionId"),
 						rs.getString("writer"),
 						rs.getString("title"),
@@ -123,18 +110,15 @@ public class QuestionDao {
 						rs.getTimestamp("createdDate"),
 						rs.getInt("countOfComment"));
 			}
-
-			return question;
-		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
+		};
+		
+		String query = "SELECT "
+										+ "questionId, writer, title, contents, createdDate, countOfComment "
+								+ "FROM "
+										+ "QUESTIONS " 
+								+ "WHERE "
+										+ "questionId = ?";
+		
+		return template.findById(query);
 	}
 }
