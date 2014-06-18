@@ -20,15 +20,15 @@ import core.mvc.Controller;
 public class ShowController implements Controller {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
-	private QuestionDao questionDao = new QuestionDao();
-	private AnswerDao answerDao = new AnswerDao();
-	private Question question;
-	private List<Answer> answers;
 	
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
+		QuestionDao questionDao = new QuestionDao();
+		AnswerDao answerDao = new AnswerDao();
+		Question question;
+		
 		long questionId = ServletRequestUtils.getLongParameter(request, Constants.REQUEST_QUESTION_ID); 
 		question = questionDao.findById(questionId);
 		
@@ -47,7 +47,7 @@ public class ShowController implements Controller {
 		//PrintTest
 		logger.info("question Request : "+question.toString());
 		
-		answers = answerDao.findAllByQuestionId(questionId);
+		List<Answer> answers = answerDao.findAllByQuestionId(questionId);
 		request.setAttribute("question", question);
 		request.setAttribute("answers", answers);
 		return "show.jsp";

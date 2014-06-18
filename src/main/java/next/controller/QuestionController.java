@@ -15,7 +15,6 @@ import next.util.ServletRequestUtils;
 public class QuestionController implements Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
-	private QuestionDao questionDao = new QuestionDao();
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -28,8 +27,8 @@ public class QuestionController implements Controller {
 		logger.info("title : "+title);
 		logger.info("contents : "+contents);
 		
-		Question question = new Question(writer, title, contents);
-		questionDao.insert(question);
+		QuestionDao questionDao = new QuestionDao();
+		questionDao.insert(new Question(writer, title, contents));
 		
 		return "redirect:/";
 	}

@@ -17,11 +17,11 @@ import core.mvc.Controller;
 public class AnswerController implements Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnswerController.class);
-	private AnswerDao answerDao = new AnswerDao();
-	private QuestionDao questionDao = new QuestionDao();
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnswerDao answerDao = new AnswerDao();
+		QuestionDao questionDao = new QuestionDao();
 		
 		long questionId = ServletRequestUtils.getLongParameter(request, Constants.REQUEST_QUESTION_ID);
 		String writer = ServletRequestUtils.getParameter(request, Constants.REQUEST_WRITER);
@@ -32,9 +32,7 @@ public class AnswerController implements Controller {
 		logger.info("writer : "+writer);
 		logger.info("contents : "+contents);
 		
-		Answer answer = new Answer(writer, contents, questionId);
-		
-		int successInsertQueryNumber = answerDao.insert(answer);
+		int successInsertQueryNumber = answerDao.insert(new Answer(writer, contents, questionId));
 		
 		if ( successInsertQueryNumber == 1 ) {
 			questionDao.updateCount(questionId);
