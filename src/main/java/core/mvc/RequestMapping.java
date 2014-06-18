@@ -17,6 +17,8 @@ public class RequestMapping {
 	
 	public void initMapping() {
 		mappings.put("/list.next", new ListController());
+		mappings.put("/api/list.next", new ListController());
+		
 		mappings.put("/show.next", new ShowController());
 		mappings.put("/form.next", new ForwardController("form.jsp"));
 		mappings.put("/save.next", new QuestionController());

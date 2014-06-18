@@ -1,6 +1,12 @@
 package core.mvc;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +51,22 @@ public class FrontController extends HttpServlet {
 
 	void movePage(HttpServletRequest req, HttpServletResponse resp,
 			String viewName) throws ServletException, IOException {
-		if (viewName.startsWith(DEFAULT_API_PREFIX)) {
+		if (viewName.startsWith(DEFAULT_API_PREFIX) || req.getRequestURI().startsWith("/"+DEFAULT_API_PREFIX)) {
+			Gson gson = new Gson();
+			
+			Enumeration<String> enumeration = req.getAttributeNames();
+			Map<String, Object> resultData = new HashMap<String, Object>();
+			
+			String key = null;
+			Object value = null;
+			while(enumeration.hasMoreElements()) {
+				key  = enumeration.nextElement().toString();
+				value = req.getAttribute(key);
+				resultData.put(key, value);
+			}
+			
+			PrintWriter out = resp.getWriter();
+			out.println(gson.toJson(resultData));
 			return;
 		}
 		
