@@ -11,15 +11,11 @@ import next.model.Answer;
 import next.model.Question;
 import next.util.Constants;
 import next.util.ServletRequestUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import core.mvc.Controller;
 
 public class ShowController implements Controller {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
 	
 	@Override
 	public String execute(HttpServletRequest request,
@@ -45,7 +41,7 @@ public class ShowController implements Controller {
 		 */
 		
 		//PrintTest
-		logger.info("question Request : "+question.toString());
+//		logger.info("question Request : "+question.toString());
 		
 		List<Answer> answers = answerDao.findAllByQuestionId(questionId);
 		request.setAttribute("question", question);

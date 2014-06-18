@@ -69,15 +69,13 @@ public class QuestionDao {
 			@SuppressWarnings("unchecked")
 			@Override
 			Question mapRow(ResultSet rs) throws SQLException {
-				Question test = new Question(
+				return new Question(
 						rs.getLong("questionId"),
 						rs.getString("writer"),
 						rs.getString("title"),
 						null,
 						rs.getTimestamp("createdDate"),
 						rs.getInt("countOfComment"));
-				System.out.println("value = "+test.toString());
-				return test;
 			}
 		};
 		

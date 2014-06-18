@@ -8,15 +8,11 @@ import next.dao.QuestionDao;
 import next.model.Answer;
 import next.util.Constants;
 import next.util.ServletRequestUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import core.mvc.Controller;
 
 public class AnswerController implements Controller {
 
-	private static final Logger logger = LoggerFactory.getLogger(AnswerController.class);
+	//private static final Logger logger = LoggerFactory.getLogger(AnswerController.class);
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -28,9 +24,9 @@ public class AnswerController implements Controller {
 		String contents = ServletRequestUtils.getParameter(request, Constants.REQUEST_CONTENTS);
 		
 		//PrintTest
-		logger.info("questionId : " +questionId);
-		logger.info("writer : "+writer);
-		logger.info("contents : "+contents);
+//		logger.info("questionId : " +questionId);
+//		logger.info("writer : "+writer);
+//		logger.info("contents : "+contents);
 		
 		int successInsertQueryNumber = answerDao.insert(new Answer(writer, contents, questionId));
 		
