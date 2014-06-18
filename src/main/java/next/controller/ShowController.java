@@ -22,6 +22,20 @@ public class ShowController implements Controller {
 			HttpServletResponse response) throws Exception {
 		long questionId = Long.parseLong(request.getParameter("questionId"));
 		question = questionDao.findById(questionId);
+		
+		//test
+		/*
+		 * Question [
+				questionId=, 
+				writer= 
+				title=, 
+				contents=
+				createdDate=2014-06-18 17:05:47.947, 
+				countOfComment=3
+			]
+		 */
+		System.out.println("question = "+question.toString());
+		
 		answers = answerDao.findAllByQuestionId(questionId);
 		request.setAttribute("question", question);
 		request.setAttribute("answers", answers);
