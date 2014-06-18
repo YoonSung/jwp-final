@@ -50,6 +50,7 @@ public class FrontController extends HttpServlet {
 	void movePage(HttpServletRequest req, HttpServletResponse resp,
 			String viewName) throws ServletException, IOException {
 		if (viewName.startsWith(DEFAULT_API_PREFIX) || req.getRequestURI().startsWith("/"+DEFAULT_API_PREFIX)) {
+			resp.setContentType("application/json");
 			Gson gson = new Gson();
 			
 			Enumeration<String> enumeration = req.getAttributeNames();
