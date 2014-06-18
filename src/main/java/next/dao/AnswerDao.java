@@ -13,9 +13,10 @@ import next.support.db.ConnectionManager;
 
 public class AnswerDao {
 
-	public void insert(Answer answer) throws SQLException {
+	public int insert(Answer answer) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		int successQueryNumber = 0;
 		try {
 			con = ConnectionManager.getConnection();
 			String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
@@ -24,7 +25,7 @@ public class AnswerDao {
 			pstmt.setString(2, answer.getContents());
 			pstmt.setTimestamp(3, new Timestamp(answer.getTimeFromCreateDate()));
 			pstmt.setLong(4, answer.getQuestionId());
-			pstmt.executeUpdate();
+			successQueryNumber = pstmt.executeUpdate();
 		} finally {
 			if (pstmt != null) {
 				pstmt.close();
@@ -33,7 +34,8 @@ public class AnswerDao {
 			if (con != null) {
 				con.close();
 			}
-		}		
+		}
+		return successQueryNumber;		
 	}
 
 	public List<Answer> findAllByQuestionId(long questionId) throws SQLException {
