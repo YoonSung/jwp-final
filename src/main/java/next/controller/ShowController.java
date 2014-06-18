@@ -5,13 +5,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Question;
+import next.util.Constants;
+import next.util.ServletRequestUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import core.mvc.Controller;
 
 public class ShowController implements Controller {
@@ -25,7 +28,8 @@ public class ShowController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		long questionId = Long.parseLong(request.getParameter("questionId"));
+
+		long questionId = ServletRequestUtils.getLongParameter(request, Constants.REQUEST_QUESTION_ID); 
 		question = questionDao.findById(questionId);
 		
 		//test

@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
+import next.util.Constants;
+import next.util.ServletRequestUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +23,9 @@ public class AnswerController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		long questionId = Long.parseLong(request.getParameter("questionId"));
-		String writer = request.getParameter("writer");
-		String contents = request.getParameter("contents");
+		long questionId = ServletRequestUtils.getLongParameter(request, Constants.REQUEST_QUESTION_ID);
+		String writer = ServletRequestUtils.getParameter(request, Constants.REQUEST_WRITER);
+		String contents = ServletRequestUtils.getParameter(request, Constants.REQUEST_CONTENTS);
 		
 		//PrintTest
 		logger.info("questionId : " +questionId);
