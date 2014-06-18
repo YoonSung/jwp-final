@@ -6,10 +6,15 @@ import javax.servlet.http.HttpServletResponse;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import core.mvc.Controller;
 
 public class AnswerController implements Controller {
 
+	private static final Logger logger = LoggerFactory.getLogger(AnswerController.class);
 	private AnswerDao answerDao = new AnswerDao();
 	private QuestionDao questionDao = new QuestionDao();
 	
@@ -20,6 +25,11 @@ public class AnswerController implements Controller {
 		String writer = request.getParameter("writer");
 		String contents = request.getParameter("contents");
 		
+		//PrintTest
+		logger.info("questionId : " +questionId);
+		logger.info("writer : "+writer);
+		logger.info("contents : "+contents);
+		
 		Answer answer = new Answer(writer, contents, questionId);
 		
 		int successInsertQueryNumber = answerDao.insert(answer);
@@ -27,12 +37,6 @@ public class AnswerController implements Controller {
 		if ( successInsertQueryNumber == 1 ) {
 			questionDao.updateCount(questionId);
 		}
-		
-		//test code
-//		System.out.println("into AnswerController");
-//		System.out.println("questionId : " +questionId);
-//		System.out.println("writer : "+writer);
-//		System.out.println("contents : "+contents);
 		
 		return "api";
 	}

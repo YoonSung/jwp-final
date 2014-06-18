@@ -5,6 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
@@ -12,6 +15,8 @@ import next.model.Question;
 import core.mvc.Controller;
 
 public class ShowController implements Controller {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
 	private QuestionDao questionDao = new QuestionDao();
 	private AnswerDao answerDao = new AnswerDao();
 	private Question question;
@@ -34,7 +39,9 @@ public class ShowController implements Controller {
 				countOfComment=3
 			]
 		 */
-		System.out.println("question = "+question.toString());
+		
+		//PrintTest
+		logger.info("question Request : "+question.toString());
 		
 		answers = answerDao.findAllByQuestionId(questionId);
 		request.setAttribute("question", question);
